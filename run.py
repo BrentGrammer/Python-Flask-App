@@ -1,3 +1,7 @@
+'''
+    All this file does is run the flask app created from the package in flaskapp/__init__.py
+'''
+
 # import the package created to avoid circular import errors:
 from flaskapp import app
 

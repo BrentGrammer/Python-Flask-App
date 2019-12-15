@@ -25,10 +25,6 @@
    ```python
    from flask import Flask
    app = Flask(__name__) # global variable == module name
-
-   @app.route('/')
-   def hello_world():
-     return 'Hello, World!'
    # the name will be __main__ if module is run directly with Python - this is done to eliminate having to set environment variables and use flask run, now we can just do `python flaskapp.py`
    if __name__ == '__main__':
      app.run(debug=True)
@@ -54,3 +50,46 @@
 ### Gotchas/Tips/Notes
 
 - autoPep8 formatter for VSCode will not allow moving imports lower in the file - you can turn this off by going into the settings (`CTRL/CMD-,`) and adding an argument to autopep8Args: `--ignore=E402`
+
+#### return JSON From Flask:
+
+```python
+from flask import jsonify
+
+@app.route('/summary')
+def summary():
+    my_dict = { ... }
+    return jsonify(my_dict)
+```
+
+#### Route Params:
+
+- can optionally annotate the data type of the route param with `<datatype:param>` otherwise just use `<paramname>`
+
+```python
+@app.route('/post/<int:post_id>')
+def post(post_id):
+    # fetch post by id using route param variable passed in
+    return my_post
+```
+
+#### Accetping POST and GET requests on a route:
+
+```python
+@app.route('/post/<int:post_id>', methods=['GET', 'POST'])
+def post(post_id):
+    # fetch post by id using route param variable passed in
+    return my_post
+```
+
+#### Getting posted JSON data from a request:
+
+```python
+from flask import Flask, request, jsonify
+
+@app.route('/api/add_message/<uuid>', methods=['GET', 'POST'])
+def add_message(uuid):
+    content = request.json
+    print content['mytext']
+    return jsonify({"uuid":uuid})
+```
